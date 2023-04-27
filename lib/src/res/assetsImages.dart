@@ -1,0 +1,23 @@
+import 'package:nirvana/src/views/homePage.dart';
+
+const splashImage = 'assets/images/lotus.png';
+const googleLogin = 'assets/images/googleLogin.png';
+const googleLogo = 'assets/images/googleLogo.png';
+const darkThemeLogo = 'assets/images/moon_icon.png';
+const logo = 'assets/images/logo.png';
+const profile = 'assets/images/profile.png';
+const shareLogo = 'assets/images/share.png';
+const homeIcon = 'assets/images/homeIcon.png';
+const homePageBanner = 'assets/images/HomePageBanner.png';
+const boxNature = 'assets/images/boxNature.png';
+const boxMusic = 'assets/images/boxMusic.png';
+const boxSpiritual = 'assets/images/boxSpiritual.png';
+const recommendation = 'assets/images/Recommendation.png';
+const meditation = 'assets/images/Meditation.png';
+const homePageBanner2 = 'assets/images/HomePageBanner2.png';
+const video = 'assets/images/Purple-circle.mp4';
+const happy = 'assets/images/happy.png';
+const sad = 'assets/images/sad.png';
+const tired = 'assets/images/tired.png';
+const worried = 'assets/images/worried.png';
+const calm = 'assets/images/calm.png';

@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "886234450814",
+    "project_id": "nirvana-fc523",
+    "storage_bucket": "nirvana-fc523.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:886234450814:android:ab2be60fd9f9efe209412f",
+        "android_client_info": {
+          "package_name": "com.example.nirvana"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "886234450814-alb3irsns611pmkoa1ob0abhebvl4j9c.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.nirvana",
+            "certificate_hash": "738af253c7e4bc7f5385e5fa1e7eafdfcb48d249"
+          }
+        },
+        {
+          "client_id": "886234450814-kml40mpkpo251dis1759r7fuse225gt1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDps4QJJSzOeGe-oh7XApD7zV0DeIuqazY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "886234450814-iqel5elvq6sna7o1q4leujeku87vkfro.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
