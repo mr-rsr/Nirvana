@@ -5,9 +5,11 @@ import 'package:nirvana/src/provider/googleLoginProvider.dart';
 import 'package:nirvana/src/provider/themeProvider.dart';
 import 'package:nirvana/src/res/colors.dart';
 import 'package:nirvana/src/res/styles.dart';
+import 'package:nirvana/src/views/congratulationScreen.dart';
 import 'package:nirvana/src/views/homePage.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nirvana/src/views/splashScreen.dart';
+import 'package:nirvana/src/views/uploadSong.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -34,13 +36,10 @@ Future main() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    //print width
-
     final themeProvider = Provider.of<ThemeProvider>(context);
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
@@ -53,7 +52,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Nirvana',
         theme: themeProvider.getTheme,
-        home: const SplashScreen(),
+        home: CongratulationScreen(title: '10'),
       ),
     );
   }
