@@ -8,6 +8,7 @@ import 'package:nirvana/src/res/styles.dart';
 import 'package:nirvana/src/views/congratulationScreen.dart';
 import 'package:nirvana/src/views/homePage.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:nirvana/src/views/setTime.dart';
 import 'package:nirvana/src/views/splashScreen.dart';
 import 'package:nirvana/src/views/uploadSong.dart';
 import 'package:provider/provider.dart';
@@ -52,7 +53,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Nirvana',
         theme: themeProvider.getTheme,
-        home: CongratulationScreen(title: '10'),
+        home: const SplashScreen(),
       ),
     );
   }
