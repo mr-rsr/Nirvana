@@ -28,29 +28,6 @@ class _SetTimeState extends State<SetTime> {
   Color? colorDark = const Color(0xff979797);
   Color? colorLight = Colors.black;
 
-  void _saveTarget(int target) async {
-    final user = FirebaseAuth.instance.currentUser;
-    if (user == null) {
-      return; // User not logged in
-    }
-    final targetRef = FirebaseFirestore.instance
-        .collection('users')
-        .doc(user.email)
-        .collection('targets')
-        .doc();
-    try {
-      await targetRef.set({
-        'target': target,
-        'timestamp': FieldValue.serverTimestamp(),
-      });
-    } catch (e) {
-      if (kDebugMode) {
-        print('Failed to save target: $e');
-        
-      }
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
@@ -186,7 +163,6 @@ class _SetTimeState extends State<SetTime> {
                   SizedBox(
                     height: 43.h,
                     width: 120.w,
-                     
                     child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           backgroundColor: buttonColor,
@@ -195,9 +171,7 @@ class _SetTimeState extends State<SetTime> {
                           ),
                         ),
                         onPressed: () {
-                          int Target = 10; 
-                          _saveTarget(Target);
-                          Navigator.pop(context);
+                          Navigator.pop(context, t.minutes[currentMinuteIndex]);
                         },
                         child: Text(
                           "Done",

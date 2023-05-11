@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
@@ -14,8 +16,10 @@ import 'package:nirvana/src/extensions/date_extension.dart';
 import '../provider/themeProvider.dart';
 
 class Report extends StatefulWidget {
-  const Report({super.key, required this.controller});
+  Report({super.key, required this.controller});
   final ScrollController controller;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
   @override
   State<Report> createState() => _ReportState();
 }
@@ -23,6 +27,7 @@ class Report extends StatefulWidget {
 class _ReportState extends State<Report> {
   int month = DateTime.now().month;
   int year = DateTime.now().year;
+  int mydailytarget = 10;
   late bool darkMode;
   int firstDayOfMonthFallsOnThisDayOfWeek(int year, int month) {
     // Use hours != 0 to avoid daylight-saving issues. Shouldn't be a
@@ -90,8 +95,25 @@ class _ReportState extends State<Report> {
                 height: 20.h,
               ),
               InkWell(
-                onTap: () => Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const SetTime())),
+                onTap: () async {
+                  final selectedTarget = await Navigator.push<int>(
+                    context,
+                    MaterialPageRoute(builder: (context) => const SetTime()),
+                  );
+
+                  if (selectedTarget != null) {
+                    setState(() {
+                      mydailytarget = selectedTarget;
+                    });
+
+                    String userEmail =
+                        FirebaseAuth.instance.currentUser!.email!;
+                    await FirebaseFirestore.instance
+                        .collection('users')
+                        .doc(userEmail)
+                        .set({'target': selectedTarget});
+                  }
+                },
                 child: Container(
                   height: 75.h,
                   width: 335.w,
@@ -135,7 +157,7 @@ class _ReportState extends State<Report> {
                               ],
                             ),
                             Text(
-                              '10 min',
+                              '$mydailytarget min',
                               style: GoogleFonts.lato(
                                 fontSize: 18.sp,
                                 fontWeight: FontWeight.w700,

@@ -53,7 +53,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Nirvana',
         theme: themeProvider.getTheme,
-        home: const SetTime(),
+        home: const SplashScreen(),
       ),
     );
   }
