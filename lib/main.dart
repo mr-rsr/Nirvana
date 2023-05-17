@@ -9,7 +9,7 @@ import 'package:nirvana/src/views/homePage.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nirvana/src/views/splashScreen.dart';
 import 'package:provider/provider.dart';
-import 'package:share/share.dart';
+import 'package:nirvana/src/views/share.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future main() async {
