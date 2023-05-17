@@ -5,15 +5,12 @@ import 'package:nirvana/src/provider/googleLoginProvider.dart';
 import 'package:nirvana/src/provider/themeProvider.dart';
 import 'package:nirvana/src/res/colors.dart';
 import 'package:nirvana/src/res/styles.dart';
-import 'package:nirvana/src/views/congratulationScreen.dart';
 import 'package:nirvana/src/views/homePage.dart';
-import 'package:nirvana/src/views/setTime.dart';
-import 'package:nirvana/src/views/splashScreen.dart';
-import 'package:nirvana/src/views/uploadSong.dart';
-import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:nirvana/src/views/report.dart';
+import 'package:nirvana/src/views/splashScreen.dart';
+import 'package:provider/provider.dart';
+import 'package:share/share.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,15 +18,14 @@ Future main() async {
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
       overlays: [SystemUiOverlay.bottom]).then((_) {
     SharedPreferences.getInstance().then((prefs) {
-      var darkModeOn = prefs.getBool('dark') ?? false;
+      var darkModeOn = prefs.getBool(dark) ?? false;
       runApp(
         MultiProvider(
           providers: [
             ChangeNotifierProvider<ThemeProvider>(
-              create: (_) => ThemeProvider(
-                  darkModeOn ? darkTheme : lightTheme, darkModeOn),
-            ),
-            ChangeNotifierProvider(create: (_) => GoogleSigninProvider()),
+                create: (_) => ThemeProvider(
+                    darkModeOn ? darkTheme : lightTheme, darkModeOn)),
+            ChangeNotifierProvider(create: (_) => GoogleSigninProvider())
           ],
           child: const MyApp(),
         ),
@@ -39,10 +35,13 @@ Future main() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
+  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    //print width
+
     final themeProvider = Provider.of<ThemeProvider>(context);
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
@@ -55,8 +54,9 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Nirvana',
         theme: themeProvider.getTheme,
-        home: const SplashScreen(),
+        home: Share(),
       ),
     );
   }
 }
+
