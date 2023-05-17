@@ -26,7 +26,8 @@ Future main() async {
         MultiProvider(
           providers: [
             ChangeNotifierProvider<ThemeProvider>(
-              create: (_) => ThemeProvider(darkModeOn ? darkTheme : lightTheme, darkModeOn),
+              create: (_) => ThemeProvider(
+                  darkModeOn ? darkTheme : lightTheme, darkModeOn),
             ),
             ChangeNotifierProvider(create: (_) => GoogleSigninProvider()),
           ],
@@ -54,7 +55,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Nirvana',
         theme: themeProvider.getTheme,
-        home: const share(),
+        home: const SplashScreen(),
       ),
     );
   }
