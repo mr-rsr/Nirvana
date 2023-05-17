@@ -54,7 +54,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Nirvana',
         theme: themeProvider.getTheme,
-        home: Report(controller: ScrollController()),
+        home: const share(),
       ),
     );
   }

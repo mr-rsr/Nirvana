@@ -192,17 +192,28 @@ class _ReportState extends State<Report> {
                             children: [
                               Container(
                                 height: 220,
-                                child: smallBox(),
+                                child: smallBox('Total Session'),
                               ),
-                              
+                              const Positioned(
+                                right: -18.5,
+                                bottom: 1,
+                                child: Opacity(
+                                  opacity: 0.5,
+                                  child: Image(
+                                    image: AssetImage(graph),
+                                    height: 147,
+                                    width: 184,
+                                  ),
+                                ),
+                              ),
                             ],
                           ),
                           const SizedBox(width: 20.0),
                           Column(
                             children: [
-                              smallBox(),
+                              smallBox('Mindful Minutes'),
                               const SizedBox(height: 20.0),
-                              smallBox(),
+                              smallBox('Longest Streak'),
                             ],
                           ),
                         ],
@@ -578,7 +589,7 @@ class _ReportState extends State<Report> {
     );
   }
 
-  Container smallBox() {
+  Container smallBox(String label) {
     return Container(
       height: 108.h,
       width: 150.w,
@@ -599,25 +610,27 @@ class _ReportState extends State<Report> {
                 Icon(
                   Icons.trending_up,
                   color: Colors.red,
-                )
+                ),
               ],
             ),
             Text(
               '30 min',
               style: GoogleFonts.lato(
-                  fontSize: 24.sp,
-                  fontWeight: FontWeight.w600,
-                  decoration: TextDecoration.none),
+                fontSize: 24.sp,
+                fontWeight: FontWeight.w600,
+                decoration: TextDecoration.none,
+              ),
             ),
             SizedBox(height: 3.h),
             Text(
-              'Total Sessions',
+              label,
               style: GoogleFonts.lato(
-                  fontSize: 16.sp,
-                  color: Color(0xff7E818C),
-                  fontWeight: FontWeight.w500,
-                  decoration: TextDecoration.none),
-            )
+                fontSize: 16.sp,
+                color: const Color(0xff7E818C),
+                fontWeight: FontWeight.w500,
+                decoration: TextDecoration.none,
+              ),
+            ),
           ],
         ),
       ),
