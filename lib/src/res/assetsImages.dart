@@ -27,4 +27,4 @@ const streak = 'assets/images/streak.png';
 const vector = 'assets/images/vector.png';
 const mind = 'assets/images/mind.png';
 const clock = 'assets/images/clock.png';
-const share = 'assets/images/share.png';
+const icon = 'assets/images/icon.png';
