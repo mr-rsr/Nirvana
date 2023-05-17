@@ -1,15 +1,49 @@
+import 'dart:io';
+import 'dart:typed_data';
+import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:nirvana/src/res/assetsImages.dart';
-
+import 'package:image_gallery_saver/image_gallery_saver.dart';
+import 'package:share/share.dart';
+import 'package:path_provider/path_provider.dart';
 import '../res/colors.dart';
 
+// ignore: must_be_immutable
 class CongratulationScreen extends StatelessWidget {
-  const CongratulationScreen({super.key, required this.title});
+  CongratulationScreen({super.key, required this.title});
   final String title;
+  GlobalKey globalKey = GlobalKey();
+
+  Future<Uint8List?> _captureImage() async {
+    try {
+      RenderRepaintBoundary boundary =
+          globalKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
+      ui.Image image = await boundary.toImage(pixelRatio: 3.0);
+      ByteData? byteData =
+          await image.toByteData(format: ui.ImageByteFormat.png);
+      return byteData?.buffer.asUint8List();
+    } catch (e) {
+      print(e);
+    }
+    return null;
+  }
+
+  Future<void> _shareImage(Uint8List imageBytes) async {
+    try {
+      final tempDir = await getTemporaryDirectory();
+      final file = await File('${tempDir.path}/image.png').create();
+      await file.writeAsBytes(imageBytes);
+      await Share.shareFiles([file.path]);
+    } catch (e) {
+      print(e);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -82,72 +116,83 @@ class CongratulationScreen extends StatelessWidget {
               SizedBox(
                 height: 20.h,
               ),
-              Container(
-                width: 335.w,
-                height: 200.h,
-                decoration: BoxDecoration(
-                  color: const Color(0xff4C477A),
-                  borderRadius: BorderRadius.circular(20.r),
-                ),
-                child: Stack(
-                  children: [
-                    Positioned(
-                      top: 30.h,
-                      left: 30.w,
-                      child: SizedBox(
-                        width: 200.w,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Flexible(
+              RepaintBoundary(
+                key: globalKey,
+                child: Container(
+                  width: 335.w,
+                  height: 200.h,
+                  decoration: BoxDecoration(
+                    color: const Color(0xff4C477A),
+                    borderRadius: BorderRadius.circular(20.r),
+                  ),
+                  child: Stack(
+                    children: [
+                      Positioned(
+                        top: 30.h,
+                        left: 30.w,
+                        child: SizedBox(
+                          width: 200.w,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Flexible(
+                                child: Text(
+                                  "Meditated spend for $title minute",
+                                  softWrap: true,
+                                  style: GoogleFonts.lato(
+                                    fontSize: 20.sp,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.white,
+                                    decoration: TextDecoration.none,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        bottom: 63.h,
+                        left: 30.w,
+                        child: GestureDetector(
+                          onTap: () async {
+                            final image = await _captureImage();
+                            if (image != null) {
+                              await _shareImage(image);
+                            }
+                          },
+                          child: Container(
+                            width: 75.w,
+                            height: 35.h,
+                            decoration: BoxDecoration(
+                              color: buttonColor,
+                              borderRadius: BorderRadius.circular(15.r),
+                            ),
+                            child: Center(
                               child: Text(
-                                "Meditated spend for $title minute",
-                                softWrap: true,
+                                'Share',
                                 style: GoogleFonts.lato(
-                                  fontSize: 20.sp,
-                                  fontWeight: FontWeight.w600,
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w400,
                                   color: Colors.white,
                                   decoration: TextDecoration.none,
                                 ),
                               ),
                             ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Positioned(
-                      bottom: 63.h,
-                      left: 30.w,
-                      child: Container(
-                        width: 75.w,
-                        height: 35.h,
-                        decoration: BoxDecoration(
-                          color: buttonColor,
-                          borderRadius: BorderRadius.circular(15.r),
-                        ),
-                        child: Center(
-                          child: Text(
-                            'Share',
-                            style: GoogleFonts.lato(
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w400,
-                              color: Colors.white,
-                              decoration: TextDecoration.none,
-                            ),
                           ),
                         ),
                       ),
-                    ),
-                    Positioned(
-                      bottom: -10.h,
-                      right: 10.w,
-                      child: const Image(
-                        image: AssetImage(meditation),
-                        width: 100,
-                        height: 200,
+                      Positioned(
+                        bottom: -10.h,
+                        right: 10.w,
+                        child: const Image(
+                          image: AssetImage(meditation),
+                          width: 100,
+                          height: 200,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
               SizedBox(

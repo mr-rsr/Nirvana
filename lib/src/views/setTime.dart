@@ -1,10 +1,12 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 import 'package:toggle_switch/toggle_switch.dart';
-
+import 'package:provider/provider.dart';
 import '../provider/themeProvider.dart';
 import '../res/colors.dart';
 import '../res/styles.dart';
@@ -20,13 +22,12 @@ class _SetTimeState extends State<SetTime> {
   var _darkTheme = false;
   final t = Time();
   final minuteController = CarouselController();
-  final hourController = CarouselController();
   int initialIndex = 0;
   int initialMinuteIndex = 0;
   int currentMinuteIndex = 2;
-  int currentHourIndex = 2;
   Color? colorDark = const Color(0xff979797);
   Color? colorLight = Colors.black;
+
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
@@ -98,55 +99,56 @@ class _SetTimeState extends State<SetTime> {
                         ),
                       ],
                     ),
-                    ToggleSwitch(
-                      minWidth: 97.w,
-                      cornerRadius: 20.0.r,
-                      activeBgColors: const [
-                        [Color(0xffEEE1FD)],
-                        [Color(0xff4F445C)]
-                      ],
-                      activeBorders: [
-                        Border.all(
-                          color: const Color(0xffBB86FC),
-                          width: 1.w,
-                        ),
-                      ],
-                      inactiveBgColor: Colors.black,
-                      initialLabelIndex: initialMinuteIndex,
-                      totalSwitches: 2,
-                      labels: const ['Minute', 'Hour'],
-                      customTextStyles: [
-                        GoogleFonts.lato(
-                          fontSize: 15.6.sp,
-                          fontWeight: FontWeight.w600,
-                          color: colorLight,
-                          decoration: TextDecoration.none,
-                        ),
-                        GoogleFonts.lato(
-                          fontSize: 15.6.sp,
-                          fontWeight: FontWeight.w600,
-                          color: colorDark,
-                          decoration: TextDecoration.none,
-                        ),
-                      ],
-                      radiusStyle: true,
-                      onToggle: (index) {
-                        setState(() {
-                          initialMinuteIndex = index!;
-                          if (initialMinuteIndex == 0) {
-                            colorDark = const Color(0xff979797);
-                            colorLight = Colors.black;
-                          } else {
-                            colorDark = darkTextColor;
-                            colorLight =
-                                Colors.white; // const Color(0xff979797);
-                          }
-                        });
-                      },
+                    Transform.translate(
+                      offset: const Offset(0.0, 16.0),
+                      child: ToggleSwitch(
+                        minWidth: 160.w,
+                        cornerRadius: 30.0.r,
+                        activeBgColors: const [
+                          [Color(0xffEEE1FD)],
+                          [Color(0xff4F445C)]
+                        ],
+                        activeBorders: [
+                          Border.all(
+                            color: const Color(0xffBB86FC),
+                            width: 1.w,
+                          ),
+                        ],
+                        inactiveBgColor: Colors.black,
+                        initialLabelIndex: initialMinuteIndex,
+                        totalSwitches: 1,
+                        labels: const ['Select Minutes'],
+                        customTextStyles: [
+                          GoogleFonts.lato(
+                            fontSize: 15.6.sp,
+                            fontWeight: FontWeight.w600,
+                            color: colorLight,
+                            decoration: TextDecoration.none,
+                          ),
+                          GoogleFonts.lato(
+                            fontSize: 15.6.sp,
+                            fontWeight: FontWeight.w600,
+                            color: colorDark,
+                            decoration: TextDecoration.none,
+                          ),
+                        ],
+                        radiusStyle: true,
+                        onToggle: (index) {
+                          setState(() {
+                            initialMinuteIndex = index!;
+                            if (initialMinuteIndex == 0) {
+                              colorDark = const Color(0xff979797);
+                              colorLight = Colors.black;
+                            } else {
+                              colorDark = darkTextColor;
+                              colorLight =
+                                  Colors.white; // const Color(0xff979797);
+                            }
+                          });
+                        },
+                      ),
                     ),
-                    initialMinuteIndex == 0
-                        ? wheelScrollerMinute()
-                        : wheelScrollerHour(),
+                    wheelScrollerMinute(),
                     const SizedBox(),
                   ],
                 ),
@@ -169,7 +171,7 @@ class _SetTimeState extends State<SetTime> {
                           ),
                         ),
                         onPressed: () {
-                          Navigator.pop(context);
+                          Navigator.pop(context, t.minutes[currentMinuteIndex]);
                         },
                         child: Text(
                           "Done",
@@ -187,47 +189,6 @@ class _SetTimeState extends State<SetTime> {
           ],
         ),
       ),
-    );
-  }
-
-  Widget wheelScrollerHour() {
-    return CarouselSlider(
-      carouselController: hourController,
-      options: CarouselOptions(
-        height: 65.h,
-        enlargeFactor: .2,
-        viewportFraction: 0.22,
-        initialPage: currentHourIndex,
-        enableInfiniteScroll: false,
-        enlargeStrategy: CenterPageEnlargeStrategy.zoom,
-        reverse: true,
-        onPageChanged: (index, reason) => setState(() {
-          currentHourIndex = index;
-        }),
-        autoPlayCurve: Curves.easeInBack,
-        enlargeCenterPage: true,
-      ),
-      items: t.hours.map((i) {
-        return Builder(
-          builder: (BuildContext context) {
-            return Text(
-              t.hours[currentHourIndex] == i ? '$i hr' : '$i',
-              style: GoogleFonts.openSans(
-                fontSize: 28.sp,
-                fontWeight: FontWeight.w600,
-                color: t.hours[currentHourIndex] == i
-                    ? !_darkTheme
-                        ? lightTextColor
-                        : darkTextColor
-                    : !_darkTheme
-                        ? const Color(0xffD9D9D9)
-                        : const Color(0xff606060),
-                decoration: TextDecoration.none,
-              ),
-            );
-          },
-        );
-      }).toList(),
     );
   }
 
@@ -275,15 +236,10 @@ class _SetTimeState extends State<SetTime> {
 
 class Time {
   late List<int> minutes;
-  late List<int> hours;
   Time() {
-    hours = [];
     minutes = [];
     for (int i = 1; i < 60; i++) {
       if (i % 5 == 0) minutes.add(i);
-    }
-    for (int i = 1; i <= 12; i++) {
-      hours.add(i);
     }
   }
 }

@@ -9,6 +9,7 @@ import 'package:nirvana/src/views/homePage.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nirvana/src/views/splashScreen.dart';
 import 'package:provider/provider.dart';
+import 'package:nirvana/src/views/share.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future main() async {
@@ -53,8 +54,9 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Nirvana',
         theme: themeProvider.getTheme,
-        home: const SplashScreen(),
+        home: Share(),
       ),
     );
   }
 }
+

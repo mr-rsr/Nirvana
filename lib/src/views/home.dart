@@ -128,7 +128,7 @@ class Home extends StatelessWidget {
                                   width: 60.h,
                                 ),
                               ),
-                              text: 'Spiritual',
+                              text: 'classic',
                               textColor: const Color(0xff2B265B),
                               boxColor: const Color(0xffFFE9E9)),
                         ],
