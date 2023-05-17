@@ -21,3 +21,4 @@ const sad = 'assets/images/sad.png';
 const tired = 'assets/images/tired.png';
 const worried = 'assets/images/worried.png';
 const calm = 'assets/images/calm.png';
+const graph = 'assets/images/graph.png';
